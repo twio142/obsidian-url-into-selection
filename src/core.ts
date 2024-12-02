@@ -37,6 +37,11 @@ export default function UrlIntoSelection(editor: Editor, cb: string | ClipboardE
   const replaceText = getReplaceText(clipboardText, selectedText, settings);
   if (replaceText === null) return;
 
+  // do nothing when pasting to an existing link
+  if (editor.cm.root.getSelection().focusNode.parentElement.matches('.cm-link, .cm-url'))
+      return;
+
+
   // apply changes
   if (typeof cb !== "string") cb.preventDefault(); // prevent default paste behavior
   replace(editor, replaceText, replaceRange);
